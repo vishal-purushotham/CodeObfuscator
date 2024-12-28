@@ -7,8 +7,14 @@ class ASTNode:
         self.value = value
         self.children = children or []
 
-    def __repr__(self):
-        return f'ASTNode({self.type}, {self.value}, {self.children})'
+    def __repr__(self, level=0):
+        ret = "  " * level + f"{self.type}"
+        if self.value:
+            ret += f": {self.value}"
+        ret += "\n"
+        for child in self.children:
+            ret += child.__repr__(level + 1)
+        return ret
 
 class Parser:
     def __init__(self, tokens):
@@ -44,28 +50,30 @@ class Parser:
             return self.if_statement()
         elif token.type == 'WHILE':
             return self.while_statement()
+        elif token.type == 'RETURN':
+            return self.return_statement()
         else:
             raise RuntimeError(f'Unexpected token {token.type} at line {token.line}')
     
     def declaration(self):
-    var_type = self.consume().value  # Consume the type (e.g., 'int', 'float')
-    var_name = self.consume('IDENT').value  # Consume the identifier (e.g., 'a')
+        var_type = self.consume().value  # Consume the type (e.g., 'int', 'float')
+        var_name = self.consume('IDENT').value  # Consume the identifier (e.g., 'a')
 
-    # Check if the next token is an assignment operator '='
-    if self.current_token().type == 'OP' and self.current_token().value == '=':
-        self.consume('OP')  # Consume '='
-        expr = self.expression()  # Parse the expression on the right-hand side
-        self.consume('SEMICOLON')  # Consume ';'
-        return ASTNode('Declaration', value=var_name, children=[
-            ASTNode('Type', value=var_type),
-            ASTNode('Assignment', children=[expr])
-        ])
-    else:
-        # If there's no assignment, just consume the semicolon
-        self.consume('SEMICOLON')
-        return ASTNode('Declaration', value=var_name, children=[
-            ASTNode('Type', value=var_type)
-        ])
+        # Check if the next token is an assignment operator '='
+        if self.current_token().type == 'OP' and self.current_token().value == '=':
+            self.consume('OP')  # Consume '='
+            expr = self.expression()  # Parse the expression on the right-hand side
+            self.consume('SEMICOLON')  # Consume ';'
+            return ASTNode('Declaration', value=var_name, children=[
+                ASTNode('Type', value=var_type),
+                ASTNode('Assignment', children=[expr])
+            ])
+        else:
+            # If there's no assignment, just consume the semicolon
+            self.consume('SEMICOLON')
+            return ASTNode('Declaration', value=var_name, children=[
+                ASTNode('Type', value=var_type)
+            ])
     
     def function_declaration(self):
         var_type = self.consume().value  # Consume return type
@@ -78,7 +86,11 @@ class Parser:
         while not self.current_token().type == 'RBRACE':
             body.append(self.statement())
         self.consume('RBRACE')  # Consume '}'
-        return ASTNode('FunctionDeclaration', value=func_name, children=[ASTNode('ReturnType', value=var_type), ASTNode('Parameters', children=parameters), ASTNode('Body', children=body)])
+        return ASTNode('FunctionDeclaration', value=func_name, children=[
+            ASTNode('ReturnType', value=var_type),
+            ASTNode('Parameters', children=parameters),
+            ASTNode('Body', children=body)
+        ])
     
     def parameter_list(self):
         parameters = []
@@ -86,7 +98,9 @@ class Parser:
             while True:
                 param_type = self.consume().value
                 param_name = self.consume('IDENT').value
-                parameters.append(ASTNode('Parameter', value=param_name, children=[ASTNode('Type', value=param_type)]))
+                parameters.append(ASTNode('Parameter', value=param_name, children=[
+                    ASTNode('Type', value=param_type)
+                ]))
                 if self.current_token().type == 'COMMA':
                     self.consume('COMMA')
                 else:
@@ -95,10 +109,10 @@ class Parser:
     
     def assignment(self):
         var_name = self.consume('IDENT').value
-        self.consume('OP', '=')
+        self.consume('OP', '=')  # Expect '='
         expr = self.expression()
-        self.consume('SEMICOLON')
-        return ASTNode('Assignment', value=var_name, children=[expr])
+        self.consume('SEMICOLON')  # Expect ';'
+        return ASTNode('AssignmentStatement', value=var_name, children=[expr])
     
     def if_statement(self):
         self.consume('IF')
@@ -110,7 +124,10 @@ class Parser:
         while not (self.current_token().type == 'RBRACE'):
             then_branch.append(self.statement())
         self.consume('RBRACE')
-        return ASTNode('If', children=[condition, ASTNode('Then', children=then_branch)])
+        return ASTNode('IfStatement', children=[
+            condition,
+            ASTNode('Then', children=then_branch)
+        ])
     
     def while_statement(self):
         self.consume('WHILE')
@@ -122,7 +139,19 @@ class Parser:
         while not (self.current_token().type == 'RBRACE'):
             body.append(self.statement())
         self.consume('RBRACE')
-        return ASTNode('While', children=[condition, ASTNode('Body', children=body)])
+        return ASTNode('WhileStatement', children=[
+            condition,
+            ASTNode('Body', children=body)
+        ])
+    
+    def return_statement(self):
+        self.consume('RETURN')  # Consume 'return' token
+        if self.current_token().type != 'SEMICOLON':
+            expr = self.expression()  # Parse the expression to return
+        else:
+            expr = None  # Handle 'return;' without an expression
+        self.consume('SEMICOLON')  # Consume ';'
+        return ASTNode('Return', children=[expr] if expr else [])
     
     def expression(self):
         return self.logical_or()
@@ -201,7 +230,7 @@ class Parser:
             self.consume('RPAREN')
             return expr
         else:
-            raise RuntimeError(f'Unexpected token {token.type} in expression at line {token.line}')
+            raise RuntimeError(f'Unexpected token {token.type} in expression at line {token.line}, column {token.column}')
     
     def current_token(self):
         if self.position < len(self.tokens):
@@ -217,8 +246,8 @@ class Parser:
     def consume(self, expected_type=None, expected_value=None):
         token = self.current_token()
         if expected_type and token.type != expected_type:
-            raise RuntimeError(f'Expected token type {expected_type}, got {token.type} at line {token.line}')
+            raise RuntimeError(f'Expected token type {expected_type}, got {token.type} ("{token.value}") at line {token.line}, column {token.column}')
         if expected_value and token.value != expected_value:
-            raise RuntimeError(f'Expected token value {expected_value}, got {token.value} at line {token.line}')
+            raise RuntimeError(f'Expected token value "{expected_value}", got "{token.value}" at line {token.line}, column {token.column}')
         self.position += 1
         return token
