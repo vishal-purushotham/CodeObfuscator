@@ -1,28 +1,25 @@
 class Deobfuscator:
     def __init__(self, identifier_map):
-        self.identifier_map = identifier_map
-    
+        # Create a reverse mapping for deobfuscation
+        self.reverse_map = {v: k for k, v in identifier_map.items()}
+
     def deobfuscate(self, ast):
-        self.restore_identifiers(ast)
-        self.remove_dead_code(ast)
+        self._deobfuscate_node(ast)
         return ast
-    
-    def restore_identifiers(self, node):
-        if node.type == 'Identifier':
-            original = self.get_original_name(node.value)
-            if original:
-                node.value = original
+
+    def _deobfuscate_node(self, node):
+        # Revert obfuscated names in declarations and assignments
+        if node.type == 'Declaration' or node.type == 'AssignmentStatement':
+            obf_name = node.value
+            if obf_name in self.reverse_map:
+                node.value = self.reverse_map[obf_name]
+
+        # Revert obfuscated names in identifier usages
+        elif node.type == 'Identifier':
+            obf_name = node.value
+            if obf_name in self.reverse_map:
+                node.value = self.reverse_map[obf_name]
+
         for child in node.children:
-            self.restore_identifiers(child)
-    
-    def get_original_name(self, obf_name):
-        for key, value in self.identifier_map.items():
-            if value == obf_name:
-                return key
-        return obf_name
-    
-    def remove_dead_code(self, node):
-        if node.type == 'Program':
-            node.children = [child for child in node.children if child.type != 'NoOp']
-        for child in node.children:
-            self.remove_dead_code(child)
+            if child:
+                self._deobfuscate_node(child)

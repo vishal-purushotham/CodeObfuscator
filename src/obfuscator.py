@@ -1,32 +1,36 @@
-import random
 import string
-from parser import ASTNode  # Added import for ASTNode
+import random
+
 
 class Obfuscator:
     def __init__(self):
         self.identifier_map = {}
-    
+
     def obfuscate(self, ast):
-        self.rename_identifiers(ast)
-        self.insert_dead_code(ast)
+        self._obfuscate_node(ast)
         return ast
 
-    def rename_identifiers(self, node):
-        if node.type == 'Identifier':
-            if node.value not in self.identifier_map:
-                obf_name = self.generate_random_name()
-                self.identifier_map[node.value] = obf_name
-            node.value = self.identifier_map[node.value]
-        for child in node.children:
-            self.rename_identifiers(child)
+    def _obfuscate_node(self, node):
+        # Rename identifiers used in variable declarations
+        if node.type == 'Declaration' or node.type == 'AssignmentStatement':
+            original_name = node.value
+            if original_name not in self.identifier_map:
+                self.identifier_map[original_name] = self._generate_random_name()
+            node.value = self.identifier_map[original_name]
 
-    def generate_random_name(self, length=8):
-        return ''.join(random.choices(string.ascii_letters, k=length))
-    
-    def insert_dead_code(self, node):
-        # Example: Insert no-op statements
-        if node.type == 'Program':
-            dead_node = ASTNode('NoOp', children=[])
-            node.children.insert(random.randint(0, len(node.children)), dead_node)
+        # Rename identifiers used elsewhere (e.g., in expressions)
+        elif node.type == 'Identifier':
+            original_name = node.value
+            if original_name in self.identifier_map:
+                node.value = self.identifier_map[original_name]
+
         for child in node.children:
-            self.insert_dead_code(child)
+            if child:
+                self._obfuscate_node(child)
+
+    def _generate_random_name(self, length=8):
+        letters = string.ascii_letters
+        # Ensure the first character is a letter or underscore
+        first_char = random.choice(string.ascii_letters + "_")
+        other_chars = ''.join(random.choice(letters + string.digits + "_") for _ in range(length - 1))
+        return first_char + other_chars

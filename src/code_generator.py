@@ -23,15 +23,20 @@ class CodeGenerator:
         return code
 
     def gen_FunctionDeclaration(self, node):
-        return f"{self.generate_node(node.children[0])} {node.value}({self.generate_parameters(node.children[1])}) {{\n{self.generate_node(node.children[2])}\n}}\n\n"
+        return f"{self.generate_node(node.children[0])} {node.value}({self.generate_parameters(node.children[1])}) {{\n{self.generate_node(node.children[2])}}}\n\n"
 
     def generate_parameters(self, node):
         params = []
         for param in node.children:
-            params.append(f"{self.generate_node(param.children[0])} {param.value}")
+            param_type = self.generate_node(param.children[0])
+            param_name = param.value
+            params.append(f"{param_type} {param_name}")
         return ", ".join(params)
 
     def gen_ReturnType(self, node):
+        return node.value
+
+    def gen_Type(self, node):
         return node.value
 
     def gen_Parameters(self, node):
