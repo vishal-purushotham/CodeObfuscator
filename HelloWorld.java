@@ -1,7 +1,7 @@
-public class TestClass {
+public class HelloWorld {
     private String greeting;
 
-    public TestClass(String greeting) {
+    public HelloWorld(String greeting) {
         this.greeting = greeting;
     }
 
@@ -10,7 +10,7 @@ public class TestClass {
     }
 
     public static void main(String[] args) {
-        TestClass hw = new TestClass("Hello, World!");
+        HelloWorld hw = new HelloWorld("Hello, World!");
         hw.sayHello();
     }
 }
