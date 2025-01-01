@@ -1,6 +1,6 @@
 int main() {
-int d6fF89Cy = 5;
-float aMNHY7cT = d6fF89Cy + 3.2;
+int lMgUgnMP = 5;
+float jJ7e_RuL = lMgUgnMP + 3.2;
 return 0;
 }
 
