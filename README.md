@@ -18,8 +18,8 @@ The **C Code Obfuscator and Deobfuscator** is a Python-based tool designed to en
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/c-code-obfuscator.git
-cd c-code-obfuscator
+git clone ttps://github.com/vishal-purushotham/CodeObfuscator.git
+cd CodeObfuscator
 ```
 
 ### 2. Set Up a Virtual Environment (Optional but Recommended)
