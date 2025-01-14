@@ -4,9 +4,17 @@ import sys
 import os
 import json
 import zipfile
-from flask import Flask, request, render_template, send_file, redirect, url_for, flash, session
 import tempfile
 import logging
+from flask import (
+    Flask,
+    request,
+    render_template,
+    send_file,
+    redirect,
+    url_for,
+    flash
+)
 
 # Add the src directory to the system path
 sys.path.append(os.path.abspath('../src'))
@@ -18,29 +26,66 @@ from deobfuscator import Deobfuscator
 from code_generator import CodeGenerator
 
 app = Flask(__name__)
-app.secret_key = 'your_secure_secret_key'  # Replace with a secure key in production
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
+# **Secret Key Setup**
+# It's crucial to use a secure and unpredictable secret key in production.
+# For demonstration purposes, we're setting it directly.
+# In production, consider using environment variables or a secure secrets manager.
+app.secret_key = 'your_secure_secret_key'  # Replace with a strong, random key in production
 
-# Configure upload folder and allowed extensions
-UPLOAD_FOLDER = tempfile.gettempdir()
-ALLOWED_EXTENSIONS = {'c', 'json'}
+# **Logging Configuration**
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s: %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),  # Logs to a file named app.log
+        logging.StreamHandler()          # Logs to the console
+    ]
+)
+
+# **Upload Configuration**
+UPLOAD_FOLDER = tempfile.gettempdir()  # Temporary directory for file uploads
+ALLOWED_EXTENSIONS = {'c', 'json'}      # Allowed file extensions
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
-    """Check if the uploaded file has an allowed extension."""
+    """
+    Check if the uploaded file has an allowed extension.
+
+    Args:
+        filename (str): The name of the file to check.
+
+    Returns:
+        bool: True if the file has an allowed extension, False otherwise.
+    """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def home():
-    """Render the home page with upload forms."""
+    """
+    Render the home page with upload forms.
+
+    Returns:
+        Rendered HTML template for the home page.
+    """
     return render_template('index.html')
 
 @app.route('/obfuscate', methods=['POST'])
 def obfuscate():
-    """Handle the obfuscation process."""
+    """
+    Handle the obfuscation process.
+
+    Steps:
+    1. Validate the uploaded file.
+    2. Perform tokenization, parsing, and obfuscation.
+    3. Generate obfuscated code and identifier map.
+    4. Create a ZIP archive containing the obfuscated code and mapping.
+    5. Provide a download link to the user.
+
+    Returns:
+        Rendered HTML template with tokens, parse tree, and download link.
+    """
     if 'source_file' not in request.files:
         flash('No file part in the request.')
         return redirect(request.url)
@@ -53,10 +98,11 @@ def obfuscate():
     
     if file and allowed_file(file.filename):
         try:
+            # Read and decode the source code from the uploaded file
             source_code = file.read().decode('utf-8')
             logging.debug("Source Code Received for Obfuscation.")
             
-            # Obfuscation Process
+            # **Obfuscation Process**
             lexer = Lexer(source_code)
             tokens = lexer.tokenize()
             logging.debug(f"Tokenization Complete. Tokens: {tokens}")
@@ -69,7 +115,7 @@ def obfuscate():
             obf_ast = obfuscator.obfuscate(ast)
             logging.debug("Obfuscation Complete.")
             
-            # Store the identifier_map
+            # Store the identifier_map for deobfuscation
             identifier_map = obfuscator.identifier_map
             logging.debug(f"Identifier Map: {identifier_map}")
             
@@ -77,71 +123,71 @@ def obfuscate():
             obf_code = generator.generate(obf_ast)
             logging.debug("Code Generation Complete.")
             
-            # Generate Parse Tree (Assuming parser provides it)
-            parse_tree = parser.get_parse_tree()  # Ensure Parser has this method
+            # Generate Parse Tree for visualization or analysis
+            parse_tree = parser.get_parse_tree()
             logging.debug("Parse Tree Generated.")
             
-            # Save obfuscated code to a temporary file
+            # **File Handling**
+            # Define filenames for the obfuscated code and identifier map
             obf_filename = 'obfuscated_code.c'
-            obf_filepath = os.path.join(app.config['UPLOAD_FOLDER'], obf_filename)
-            with open(obf_filepath, 'w', encoding='utf-8') as f:
-                f.write(obf_code)
-            logging.debug(f"Obfuscated Code Saved to {obf_filepath}")
-            
-            # Serialize the identifier_map to JSON
             identifier_map_filename = 'identifier_map.json'
-            identifier_map_path = os.path.join(app.config['UPLOAD_FOLDER'], identifier_map_filename)
-            with open(identifier_map_path, 'w', encoding='utf-8') as map_file:
-                json.dump(identifier_map, map_file, indent=4)
-            logging.debug(f"Identifier Map Saved to {identifier_map_path}")
-            
-            # Create a ZIP archive containing both files
             zip_filename = 'obfuscated_code.zip'
+            
+            # Write obfuscated code to a temporary file
+            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.c') as obf_file:
+                obf_file.write(obf_code)
+                obf_filepath = obf_file.name
+                logging.debug(f"Obfuscated Code Saved to {obf_filepath}")
+            
+            # Serialize the identifier_map to JSON and write to a temporary file
+            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as map_file:
+                json.dump(identifier_map, map_file, indent=4)
+                identifier_map_path = map_file.name
+                logging.debug(f"Identifier Map Saved to {identifier_map_path}")
+            
+            # **Create ZIP Archive**
             zip_path = os.path.join(app.config['UPLOAD_FOLDER'], zip_filename)
             with zipfile.ZipFile(zip_path, 'w') as zipf:
                 zipf.write(obf_filepath, obf_filename)
                 zipf.write(identifier_map_path, identifier_map_filename)
             logging.debug(f"ZIP Archive Created at {zip_path}")
             
-            # Clean up temporary files
+            # **Clean Up Temporary Files**
             os.remove(obf_filepath)
             os.remove(identifier_map_path)
             logging.debug("Temporary Files Removed.")
             
-            # Render the template with tokens and parse_tree, and provide download link
+            # **Render Template with Results**
             return render_template(
                 'index.html',
                 tokens=tokens,
-                parse_tree=parse_tree,
+                parse_tree=parse_tree,  # Pass as dict, not as JSON string
                 download_link=url_for('download_zip', filename=zip_filename)
             )
         
         except Exception as e:
-            logging.error(f'Obfuscation failed: {e}')
+            logging.exception('Obfuscation failed.')
             flash(f'Obfuscation failed: {str(e)}')
             return redirect(url_for('home'))
     else:
-        flash('Invalid file type. Only `.c` files are allowed.')
+        flash('Invalid file type. Only `.c` and `.json` files are allowed.')
         return redirect(request.url)
-
-@app.route('/download/<filename>')
-def download_zip(filename):
-    """Provide the ZIP file for download."""
-    zip_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    try:
-        return send_file(
-            zip_path,
-            as_attachment=True,
-            download_name=filename
-        )
-    except Exception as e:
-        logging.error(f'Download failed: {e}')
-        flash('Download failed. Please try obfuscating again.')
-        return redirect(url_for('home'))
 
 @app.route('/deobfuscate', methods=['POST'])
 def deobfuscate():
-    """Handle the deobfuscation process."""
+    """
+    Handle the deobfuscation process.
+
+    Steps:
+    1. Validate the uploaded obfuscated file and identifier map.
+    2. Perform tokenization, parsing, and deobfuscation.
+    3. Generate the original code.
+    4. Create a ZIP archive containing the deobfuscated code.
+    5. Provide a download link to the user.
+
+    Returns:
+        Rendered HTML template with original code and download link.
+    """
     if 'obf_file' not in request.files or 'map_file' not in request.files:
         flash('Please upload both the obfuscated file and the identifier mapping file.')
         return redirect(request.url)
@@ -155,7 +201,7 @@ def deobfuscate():
     
     if obf_file and allowed_file(obf_file.filename) and map_file and allowed_file(map_file.filename):
         try:
-            # Read the obfuscated code
+            # Read and decode the obfuscated code from the uploaded file
             obf_code = obf_file.read().decode('utf-8')
             logging.debug("Obfuscated Code Received for Deobfuscation.")
         except UnicodeDecodeError:
@@ -172,7 +218,7 @@ def deobfuscate():
             flash('Invalid identifier mapping file. Please provide a valid JSON file.')
             return redirect(request.url)
         
-        # Deobfuscation Process
+        # **Deobfuscation Process**
         try:
             lexer = Lexer(obf_code)
             obf_tokens = lexer.tokenize()
@@ -190,42 +236,64 @@ def deobfuscate():
             original_code = generator.generate(deobf_ast)
             logging.debug("Original Code Generation Complete.")
             
-            # Save deobfuscated code to a temporary file
+            # **File Handling**
             deobf_filename = 'deobfuscated_code.c'
-            deobf_filepath = os.path.join(app.config['UPLOAD_FOLDER'], deobf_filename)
-            with open(deobf_filepath, 'w', encoding='utf-8') as f:
-                f.write(original_code)
-            logging.debug(f"Deobfuscated Code Saved to {deobf_filepath}")
+            zip_filename = 'deobfuscated_code.zip'
             
-            # Render the template with deobfuscated code and provide download link
+            # Write deobfuscated code to a temporary file
+            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.c') as deobf_file:
+                deobf_file.write(original_code)
+                deobf_filepath = deobf_file.name
+                logging.debug(f"Deobfuscated Code Saved to {deobf_filepath}")
+            
+            # **Create ZIP Archive**
+            zip_path = os.path.join(app.config['UPLOAD_FOLDER'], zip_filename)
+            with zipfile.ZipFile(zip_path, 'w') as zipf:
+                zipf.write(deobf_filepath, deobf_filename)
+            logging.debug(f"ZIP Archive Created at {zip_path}")
+            
+            # **Clean Up Temporary Files**
+            os.remove(deobf_filepath)
+            logging.debug("Temporary Files Removed.")
+            
+            # **Render Template with Results**
             return render_template(
                 'index.html',
                 original_code=original_code,
-                download_link=url_for('download_deobfuscated', filename=deobf_filename)
+                download_link=url_for('download_zip', filename=zip_filename)
             )
         
         except Exception as e:
-            logging.error(f'Deobfuscation failed: {e}')
+            logging.exception('Deobfuscation failed.')
             flash(f'Deobfuscation failed: {str(e)}')
             return redirect(url_for('home'))
     else:
         flash('Invalid file types. Please ensure you upload a `.c` file and a `.json` mapping file.')
         return redirect(request.url)
 
-@app.route('/download_deobfuscated/<filename>')
-def download_deobfuscated(filename):
-    """Provide the deobfuscated file for download."""
-    deobf_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/download_zip/<filename>')
+def download_zip(filename):
+    """
+    Provide the ZIP file for download.
+
+    Args:
+        filename (str): The name of the ZIP file to download.
+
+    Returns:
+        send_file response to initiate the download.
+    """
+    zip_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     try:
         return send_file(
-            deobf_path,
+            zip_path,
             as_attachment=True,
             download_name=filename
         )
     except Exception as e:
-        logging.error(f'Download failed: {e}')
-        flash('Download failed. Please try deobfuscating again.')
+        logging.exception('Download failed.')
+        flash('Download failed. Please try the operation again.')
         return redirect(url_for('home'))
 
 if __name__ == '__main__':
+    # It's recommended to set debug=False in production for security reasons
     app.run(debug=True)

@@ -1,0 +1,21 @@
+2025-01-14 13:24:07,693 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-01-14 13:24:07,694 INFO: [33mPress CTRL+C to quit[0m
+2025-01-14 13:24:07,695 INFO:  * Restarting with stat
+2025-01-14 13:24:08,073 WARNING:  * Debugger is active!
+2025-01-14 13:24:08,079 INFO:  * Debugger PIN: 740-403-945
+2025-01-14 13:24:09,964 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:09] "GET / HTTP/1.1" 200 -
+2025-01-14 13:24:10,077 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:10] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-01-14 13:24:13,259 DEBUG: Source Code Received for Obfuscation.
+2025-01-14 13:24:13,260 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='main', line=2, column=4), Token(type='LPAREN', value='(', line=2, column=8), Token(type='RPAREN', value=')', line=2, column=9), Token(type='LBRACE', value='{', line=2, column=11), Token(type='INT', value='int', line=3, column=4), Token(type='IDENT', value='a', line=3, column=8), Token(type='OP', value='=', line=3, column=10), Token(type='NUMBER', value=5, line=3, column=12), Token(type='SEMICOLON', value=';', line=3, column=13), Token(type='FLOAT', value='float', line=4, column=4), Token(type='IDENT', value='b', line=4, column=10), Token(type='OP', value='=', line=4, column=12), Token(type='IDENT', value='a', line=4, column=14), Token(type='OP', value='+', line=4, column=16), Token(type='NUMBER', value=3.2, line=4, column=18), Token(type='SEMICOLON', value=';', line=4, column=21), Token(type='RETURN', value='return', line=5, column=4), Token(type='NUMBER', value=0, line=5, column=11), Token(type='SEMICOLON', value=';', line=5, column=12), Token(type='RBRACE', value='}', line=6, column=0), Token(type='EOF', value='', line=6, column=0)]
+2025-01-14 13:24:13,262 DEBUG: Parsing Complete. AST Generated.
+2025-01-14 13:24:13,262 DEBUG: Obfuscation Complete.
+2025-01-14 13:24:13,262 DEBUG: Identifier Map: {'main': 'k50XSiFi', 'a': 'ov4bsWGt', 'b': 'hbaf4TT6'}
+2025-01-14 13:24:13,263 DEBUG: Code Generation Complete.
+2025-01-14 13:24:13,263 DEBUG: Parse Tree Generated.
+2025-01-14 13:24:13,263 DEBUG: Obfuscated Code Saved to C:\Users\buvan\AppData\Local\Temp\tmpmecbs8q0.c
+2025-01-14 13:24:13,264 DEBUG: Identifier Map Saved to C:\Users\buvan\AppData\Local\Temp\tmpml96_71y.json
+2025-01-14 13:24:13,283 DEBUG: ZIP Archive Created at C:\Users\buvan\AppData\Local\Temp\obfuscated_code.zip
+2025-01-14 13:24:13,285 DEBUG: Temporary Files Removed.
+2025-01-14 13:24:13,286 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:13] "POST /obfuscate HTTP/1.1" 200 -
+2025-01-14 13:24:13,330 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:13] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -

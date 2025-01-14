@@ -1,4 +1,4 @@
-# Modified code_parser.py
+# src/code_parser.py
 
 import re  # Imported to handle regular expressions in preprocessor directives
 from lexer import Lexer, Token
@@ -6,12 +6,28 @@ from collections import namedtuple
 
 class ASTNode:
     def __init__(self, type, value=None, children=None):
-        self.type = type  # Type of the AST node (e.g., 'FunctionDeclaration', 'IfStatement')
-        self.value = value  # Optional value associated with the node (e.g., variable name)
-        self.children = children or []  # List of child ASTNodes
+        """
+        Initializes an ASTNode.
+        
+        Args:
+            type (str): Type of the AST node (e.g., 'FunctionDeclaration', 'IfStatement').
+            value (str, optional): Optional value associated with the node (e.g., variable name).
+            children (list, optional): List of child ASTNodes.
+        """
+        self.type = type
+        self.value = value
+        self.children = children or []
 
     def __repr__(self, level=0):
-        """Provides a string representation of the AST for debugging purposes."""
+        """
+        Provides a string representation of the AST for debugging purposes.
+        
+        Args:
+            level (int, optional): Current indentation level.
+        
+        Returns:
+            str: String representation of the ASTNode.
+        """
         ret = "  " * level + f"{self.type}"
         if self.value:
             ret += f": {self.value}"
@@ -36,11 +52,22 @@ class ASTNode:
 
 class Parser:
     def __init__(self, tokens):
-        self.tokens = tokens  # List of tokens obtained from the Lexer
-        self.position = 0  # Current position in the token list
+        """
+        Initializes the Parser with a list of tokens.
+        
+        Args:
+            tokens (list): List of tokens obtained from the Lexer.
+        """
+        self.tokens = tokens
+        self.position = 0
 
     def parse(self):
-        """Initiates the parsing process and returns the root of the AST."""
+        """
+        Initiates the parsing process and returns the root of the AST.
+        
+        Returns:
+            ASTNode: The root node representing the program.
+        """
         return self.program()
 
     def program(self):
@@ -69,7 +96,6 @@ class Parser:
         """
         token = self.current_token()
         if token.type in {'INT', 'FLOAT', 'VOID', 'CHAR', 'DOUBLE'}:
-            # Lookahead to determine if it's a function or variable declaration
             next_token = self.peek_token()
             if next_token.type == 'IDENT':
                 third_token = self.peek_token(2)
@@ -80,7 +106,11 @@ class Parser:
             else:
                 raise RuntimeError(f'Unexpected token {next_token.type} after {token.type} at line {token.line}')
         elif token.type == 'IDENT':
-            return self.assignment()
+            next_token = self.peek_token()
+            if next_token.type == 'LPAREN':
+                return self.function_call_statement()
+            else:
+                return self.assignment_statement()
         elif token.type == 'IF':
             return self.if_statement()
         elif token.type == 'WHILE':
@@ -88,7 +118,7 @@ class Parser:
         elif token.type == 'RETURN':
             return self.return_statement()
         else:
-            raise RuntimeError(f'Unexpected token {token.type} at line {token.line}')
+            raise RuntimeError(f'Unexpected token {token.type} at line {token.line}, column {token.column}')
 
     def preprocessor_directive(self):
         """
@@ -98,9 +128,9 @@ class Parser:
             ASTNode: The AST node representing the preprocessor directive.
         """
         token = self.consume('PREPROCESSOR')
-        directive, file_path = self.parse_preprocessor(token.value)
+        directive, value = self.parse_preprocessor(token.value)
         return ASTNode('PreprocessorDirective', value=directive, children=[
-            ASTNode('FilePath', value=file_path)
+            ASTNode('Value', value=value)
         ])
 
     def parse_preprocessor(self, directive):
@@ -113,13 +143,12 @@ class Parser:
         Returns:
             tuple: A tuple containing the directive type and its associated value.
         """
-        # Simple parsing for include and define directives
         if directive.startswith('#include'):
             match = re.match(r'#\s*include\s*[\"<](.*)[\">]', directive)
             if match:
                 return 'include', match.group(1)
         elif directive.startswith('#define'):
-            parts = directive.split()
+            parts = directive.split(maxsplit=2)
             if len(parts) >= 3:
                 return 'define', ' '.join(parts[1:])
         return 'unknown', directive
@@ -157,7 +186,7 @@ class Parser:
         Returns:
             ASTNode: The AST node representing the function declaration.
         """
-        var_type = self.consume().value  # Consume return type
+        return_type = self.consume().value  # Consume return type
         func_name = self.consume('IDENT').value  # Consume function name
         self.consume('LPAREN')  # Consume '('
         parameters = self.parameter_list()
@@ -168,10 +197,52 @@ class Parser:
             body.append(self.statement())
         self.consume('RBRACE')  # Consume '}'
         return ASTNode('FunctionDeclaration', value=func_name, children=[
-            ASTNode('ReturnType', value=var_type),
+            ASTNode('ReturnType', value=return_type),
             ASTNode('Parameters', children=parameters),
             ASTNode('Body', children=body)
         ])
+
+    def function_call_statement(self):
+        """
+        Parses a function call as a statement.
+        
+        Returns:
+            ASTNode: The AST node representing the function call.
+        """
+        func_call = self.function_call()
+        self.consume('SEMICOLON')  # Consume ';' after function call
+        return ASTNode('FunctionCallStatement', children=[func_call])
+
+    def function_call(self):
+        """
+        Parses a function call.
+        
+        Returns:
+            ASTNode: The AST node representing the function call.
+        """
+        func_name = self.consume('IDENT').value  # Consume function name
+        self.consume('LPAREN')  # Consume '('
+        arguments = self.argument_list()
+        self.consume('RPAREN')  # Consume ')'
+        return ASTNode('FunctionCall', value=func_name, children=arguments)
+
+    def argument_list(self):
+        """
+        Parses the list of arguments in a function call.
+        
+        Returns:
+            list: A list of ASTNodes representing each argument.
+        """
+        arguments = []
+        if self.current_token().type != 'RPAREN':
+            while True:
+                arg = self.expression()
+                arguments.append(arg)
+                if self.current_token().type == 'COMMA':
+                    self.consume('COMMA')  # Consume ','
+                else:
+                    break
+        return arguments
 
     def parameter_list(self):
         """
@@ -194,7 +265,7 @@ class Parser:
                     break
         return parameters
 
-    def assignment(self):
+    def assignment_statement(self):
         """
         Parses an assignment statement.
         
@@ -259,10 +330,11 @@ class Parser:
         self.consume('RETURN')  # Consume 'return' token
         if self.current_token().type != 'SEMICOLON':
             expr = self.expression()  # Parse the expression to return
+            self.consume('SEMICOLON')  # Consume ';'
+            return ASTNode('ReturnStatement', children=[expr])
         else:
-            expr = None  # Handle 'return;' without an expression
-        self.consume('SEMICOLON')  # Consume ';'
-        return ASTNode('Return', children=[expr] if expr else [])
+            self.consume('SEMICOLON')  # Consume ';'
+            return ASTNode('ReturnStatement')
 
     def expression(self):
         """
@@ -278,7 +350,7 @@ class Parser:
         while self.current_token().type == 'OP' and self.current_token().value == '||':
             op = self.consume().value
             right = self.logical_and()
-            node = ASTNode('BinOp', op, [node, right])
+            node = ASTNode('LogicalOr', op, [node, right])
         return node
 
     def logical_and(self):
@@ -286,7 +358,7 @@ class Parser:
         while self.current_token().type == 'OP' and self.current_token().value == '&&':
             op = self.consume().value
             right = self.equality()
-            node = ASTNode('BinOp', op, [node, right])
+            node = ASTNode('LogicalAnd', op, [node, right])
         return node
 
     def equality(self):
@@ -294,7 +366,7 @@ class Parser:
         while self.current_token().type == 'OP' and self.current_token().value in {'==', '!='}:
             op = self.consume().value
             right = self.relational()
-            node = ASTNode('BinOp', op, [node, right])
+            node = ASTNode('Equality', op, [node, right])
         return node
 
     def relational(self):
@@ -302,7 +374,7 @@ class Parser:
         while self.current_token().type == 'OP' and self.current_token().value in {'<', '>', '<=', '>='}:
             op = self.consume().value
             right = self.additive()
-            node = ASTNode('BinOp', op, [node, right])
+            node = ASTNode('Relational', op, [node, right])
         return node
 
     def additive(self):
@@ -310,7 +382,7 @@ class Parser:
         while self.current_token().type == 'OP' and self.current_token().value in {'+', '-'}:
             op = self.consume().value
             right = self.multiplicative()
-            node = ASTNode('BinOp', op, [node, right])
+            node = ASTNode('Additive', op, [node, right])
         return node
 
     def multiplicative(self):
@@ -318,7 +390,7 @@ class Parser:
         while self.current_token().type == 'OP' and self.current_token().value in {'*', '/'}:
             op = self.consume().value
             right = self.unary()
-            node = ASTNode('BinOp', op, [node, right])
+            node = ASTNode('Multiplicative', op, [node, right])
         return node
 
     def unary(self):
@@ -331,6 +403,12 @@ class Parser:
             return self.primary()
 
     def primary(self):
+        """
+        Parses a primary expression.
+        
+        Returns:
+            ASTNode: The AST node representing the primary expression.
+        """
         token = self.current_token()
         if token.type == 'NUMBER':
             self.consume('NUMBER')
@@ -339,8 +417,12 @@ class Parser:
             self.consume('STRING')
             return ASTNode('String', value=token.value)
         elif token.type == 'IDENT':
-            self.consume('IDENT')
-            return ASTNode('Identifier', value=token.value)
+            next_token = self.peek_token()
+            if next_token.type == 'LPAREN':
+                return self.function_call()
+            else:
+                self.consume('IDENT')
+                return ASTNode('Identifier', value=token.value)
         elif token.type == 'LPAREN':
             self.consume('LPAREN')
             expr = self.expression()
@@ -365,7 +447,7 @@ class Parser:
         Peeks ahead in the token list without consuming tokens.
         
         Args:
-            offset (int): The number of tokens to look ahead.
+            offset (int, optional): The number of tokens to look ahead.
         
         Returns:
             Token: The token at the peeked position or an EOF token if out of bounds.

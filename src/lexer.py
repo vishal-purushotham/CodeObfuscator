@@ -1,4 +1,4 @@
-# Modified lexer.py
+# src/lexer.py
 
 import re
 from collections import namedtuple
@@ -9,7 +9,7 @@ class Lexer:
     def __init__(self, source_code):
         self.source = source_code
         self.tokens = []
-        self.keywords = {'if', 'else', 'while', 'return', 'int', 'float', 'void', 'char', 'double', 'include'}
+        self.keywords = {'if', 'else', 'while', 'return', 'int', 'float', 'void', 'char', 'double', 'include', 'define'}
         self.token_specification = [
             ('COMMENT',        r'//.*|/\*[\s\S]*?\*/'),       # Single-line and multi-line comments
             ('PREPROCESSOR',   r'\#\s*(include|define)\s+["<][^">]+[">]'),  # Preprocessor directives
@@ -47,7 +47,7 @@ class Lexer:
             elif kind in {'OP', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA'}:
                 self.tokens.append(Token(kind, value, line_num, column))
             elif kind == 'STRING':
-                self.tokens.append(Token(kind, value[1:-1], line_num, column))
+                self.tokens.append(Token(kind, value[1:-1], line_num, column))  # Remove quotes
             elif kind == 'PREPROCESSOR':
                 self.tokens.append(Token(kind, value, line_num, column))
             elif kind == 'NEWLINE':

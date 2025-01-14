@@ -1,26 +1,92 @@
+/* webapp/static/styles.css */
+
 body {
-    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: #343a40;
+    text-align: center;
+    color: #333333;
 }
 
 h3 {
-    color: #495057;
+    color: #555555;
 }
 
-.form-label {
-    font-weight: bold;
+form {
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
 }
 
-.table th, .table td {
-    vertical-align: middle;
+button {
+    width: 100%;
+}
+
+pre {
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: Consolas, monospace;
+}
+
+.table {
+    font-size: 14px;
 }
 
 #parse-tree {
-    border: 1px solid #dee2e6;
-    padding: 10px;
-    background-color: #fff;
-    overflow: auto;
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    #parse-tree {
+        height: 400px;
+    }
+}
+
+/* Additional Styling for D3.js Tree */
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text {
+    font: 12px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
 }
