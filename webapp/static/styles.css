@@ -13,3 +13,14 @@ h3 {
 .form-label {
     font-weight: bold;
 }
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+#parse-tree {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    background-color: #fff;
+    overflow: auto;
+}

@@ -1,3 +1,5 @@
+<!-- webapp/templates/index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- D3.js Library for Parse Tree Visualization -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
     <div class="container mt-5">
@@ -30,9 +34,18 @@
                     <div class="mb-3">
                         <label for="source_file" class="form-label">Upload C Source File:</label>
                         <input class="form-control" type="file" id="source_file" name="source_file" accept=".c" required>
+                        <div class="form-text">Only `.c` files are allowed.</div>
                     </div>
                     <button type="submit" class="btn btn-primary">Obfuscate</button>
                 </form>
+                
+                {% if download_link %}
+                <div class="mt-3">
+                    <a href="{{ download_link }}" class="btn btn-success">
+                        Download Obfuscated Code (.zip)
+                    </a>
+                </div>
+                {% endif %}
             </div>
             
             <!-- Deobfuscate Form -->
@@ -49,14 +62,148 @@
                     </div>
                     <button type="submit" class="btn btn-secondary">Deobfuscate</button>
                 </form>
+                {% if download_link %}
+                <div class="mt-3">
+                    <a href="{{ download_link }}" class="btn btn-success">
+                        Download Deobfuscated Code (.c)
+                    </a>
+                </div>
+                {% endif %}
                 <div class="mt-3">
                     <p><strong>Note:</strong> Deobfuscation requires the original identifier mapping used during obfuscation.</p>
                 </div>
             </div>
         </div>
+        
+        <!-- Display Tokenization and Parse Tree after Obfuscation -->
+        {% if tokens and parse_tree %}
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h3>Obfuscation Process</h3>
+                
+                <!-- Tokenization Display -->
+                <div class="mb-4">
+                    <h4>Tokenization:</h4>
+                    <table class="table table-striped" id="tokens-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Line</th>
+                                <th>Column</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for token in tokens %}
+                            <tr>
+                                <td>{{ token.type }}</td>
+                                <td>{{ token.value }}</td>
+                                <td>{{ token.line }}</td>
+                                <td>{{ token.column }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Parse Tree Visualization -->
+                <div>
+                    <h4>Parse Tree:</h4>
+                    <div id="parse-tree"></div> <!-- Container for D3.js Visualization -->
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Display Deobfuscated Code -->
+        {% if original_code %}
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h3>Deobfuscation Result</h3>
+                <pre class="bg-light p-3">{{ original_code }}</pre>
+            </div>
+        </div>
+        {% endif %}
     </div>
     
     <!-- Bootstrap JS (Optional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% if parse_tree %}
+    <!-- D3.js Script for Rendering the Parse Tree -->
+    <script>
+        /**
+         * Function to render the parse tree using D3.js.
+         * @param {Object} treeData - JSON object representing the parse tree.
+         */
+        function renderParseTree(treeData) {
+            // Remove any existing SVG to avoid duplicates
+            d3.select("#parse-tree").selectAll("*").remove();
+
+            const margin = {top: 20, right: 90, bottom: 30, left: 90},
+                  width = 960 - margin.left - margin.right,
+                  height = 600 - margin.top - margin.bottom;
+            
+            // Create an SVG element
+            const svg = d3.select("#parse-tree").append("svg")
+                .attr("width", width + margin.right + margin.left)
+                .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            
+            // Convert the tree data into a hierarchical layout
+            const root = d3.hierarchy(treeData, function(d) {
+                return d.children;
+            });
+            
+            const treemap = d3.tree().size([height, width]);
+            
+            const treeDataLayout = treemap(root);
+            
+            const nodes = treeDataLayout.descendants(),
+                  links = treeDataLayout.descendants().slice(1);
+            
+            // Add links between nodes
+            svg.selectAll('.link')
+                .data(links)
+              .enter().append('path')
+                .attr('class', 'link')
+                .attr('d', function(d) {
+                    return "M" + d.y + "," + d.x
+                        + "C" + (d.parent.y + 100) + "," + d.x
+                        + " " + (d.parent.y + 100) + "," + d.parent.x
+                        + " " + d.parent.y + "," + d.parent.x;
+                })
+                .style('fill', 'none')
+                .style('stroke', '#ccc')
+                .style('stroke-width', '2px');
+            
+            // Add nodes to the tree
+            const node = svg.selectAll('.node')
+                .data(nodes)
+              .enter().append('g')
+                .attr('class', 'node')
+                .attr('transform', function(d) { return 'translate(' + d.y + ',' + d.x + ')'; });
+            
+            // Add circles for each node
+            node.append('circle')
+                .attr('r', 10)
+                .style('fill', '#fff')
+                .style('stroke', 'steelblue')
+                .style('stroke-width', '3px');
+            
+            // Add labels to the nodes
+            node.append('text')
+                .attr('dy', '.35em')
+                .attr('x', function(d) { return d.children ? -13 : 13; })
+                .style('text-anchor', function(d) { return d.children ? 'end' : 'start'; })
+                .text(function(d) { return d.data.type; });
+        }
+
+        // Safely assign parseTreeData using JSON.parse and escaped JSON string
+        const parseTreeData = JSON.parse('{{ parse_tree | tojson | safe }}');
+        renderParseTree(parseTreeData);
+    </script>
+    {% endif %}
 </body>
 </html>
