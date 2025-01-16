@@ -2,7 +2,7 @@
 
 The **C Code Obfuscator and Deobfuscator** is a Python-based tool designed to enhance the security and confidentiality of C source code. The obfuscator transforms the original code into a less readable and more complex version by renaming variables, functions, and other identifiers. The deobfuscator reverses this process, restoring the code to its original, readable state.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## Features 🔍
 
@@ -14,7 +14,7 @@ The **C Code Obfuscator and Deobfuscator** is a Python-based tool designed to en
 - 🔗 **Web Interface**: Upload and process files via an interactive web page.
 - 🔧 **Extensible Design**: Easily extendable to support additional C language features.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## Installation 🌐
 
@@ -36,7 +36,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 > **Note**: Ensure that requirements.txt includes all necessary Python packages.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## Usage 🚀
 
@@ -58,7 +58,7 @@ Access the web page at `http://127.0.0.1:5000` and upload your C source file for
 - To deobfuscate:
   - Upload the obfuscated `.c` file and the `mapper.json` file on the same page.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## Interactive Web Features 🌟
 
@@ -69,7 +69,7 @@ Access the web page at `http://127.0.0.1:5000` and upload your C source file for
   - Success ✅ and error ❌ alerts.
 - **Download Links**: Easily download your zipped files with a single click 🗭.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## Example Workflow 🎩
 
@@ -78,19 +78,19 @@ Access the web page at `http://127.0.0.1:5000` and upload your C source file for
 3. Download the **zipped results**.
 4. Use the `mapper.json` file to deobfuscate, if needed.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## Contributing 🌱
 
 We welcome contributions! Feel free to submit a pull request or report issues.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 ## License 🔒
 
 This project is licensed under the MIT License.
 
-![Decorative Divider](https://via.placeholder.com/800x10.png?text=+)
+---
 
 **Happy Coding! 🌟**
 
