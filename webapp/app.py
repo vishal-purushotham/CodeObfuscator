@@ -1,11 +1,11 @@
 # webapp/app.py
 
-import sys
 import os
-import json
-import zipfile
-import tempfile
+import sys
 import logging
+import tempfile
+import zipfile
+import json
 from flask import (
     Flask,
     request,
@@ -137,19 +137,19 @@ def obfuscate():
             with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.c') as obf_file:
                 obf_file.write(obf_code)
                 obf_filepath = obf_file.name
-                logging.debug(f"Obfuscated Code Saved to {obf_filepath}")
+            logging.debug(f"Obfuscated code written to {obf_filepath}")
             
             # Serialize the identifier_map to JSON and write to a temporary file
             with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as map_file:
                 json.dump(identifier_map, map_file, indent=4)
                 identifier_map_path = map_file.name
-                logging.debug(f"Identifier Map Saved to {identifier_map_path}")
+            logging.debug(f"Identifier map written to {identifier_map_path}")
             
             # **Create ZIP Archive**
             zip_path = os.path.join(app.config['UPLOAD_FOLDER'], zip_filename)
             with zipfile.ZipFile(zip_path, 'w') as zipf:
-                zipf.write(obf_filepath, obf_filename)
-                zipf.write(identifier_map_path, identifier_map_filename)
+                zipf.write(obf_filepath, arcname=obf_filename)
+                zipf.write(identifier_map_path, arcname=identifier_map_filename)
             logging.debug(f"ZIP Archive Created at {zip_path}")
             
             # **Clean Up Temporary Files**
@@ -157,11 +157,15 @@ def obfuscate():
             os.remove(identifier_map_path)
             logging.debug("Temporary Files Removed.")
             
+            # **Serialize parse_tree for JSON**
+            parse_tree_json = json.dumps(parse_tree, indent=4)
+            logging.debug(f"Serialized Parse Tree: {parse_tree_json}")
+            
             # **Render Template with Results**
             return render_template(
                 'index.html',
                 tokens=tokens,
-                parse_tree=parse_tree,  # Pass as dict, not as JSON string
+                parse_tree=parse_tree_json,                # Pass as JSON string
                 download_link=url_for('download_zip', filename=zip_filename)
             )
         
@@ -170,7 +174,7 @@ def obfuscate():
             flash(f'Obfuscation failed: {str(e)}')
             return redirect(url_for('home'))
     else:
-        flash('Invalid file type. Only `.c` and `.json` files are allowed.')
+        flash('Invalid file type. Only `.c` files are allowed.')
         return redirect(request.url)
 
 @app.route('/deobfuscate', methods=['POST'])
@@ -244,12 +248,12 @@ def deobfuscate():
             with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.c') as deobf_file:
                 deobf_file.write(original_code)
                 deobf_filepath = deobf_file.name
-                logging.debug(f"Deobfuscated Code Saved to {deobf_filepath}")
+            logging.debug(f"Deobfuscated code written to {deobf_filepath}")
             
             # **Create ZIP Archive**
             zip_path = os.path.join(app.config['UPLOAD_FOLDER'], zip_filename)
             with zipfile.ZipFile(zip_path, 'w') as zipf:
-                zipf.write(deobf_filepath, deobf_filename)
+                zipf.write(deobf_filepath, arcname=deobf_filename)
             logging.debug(f"ZIP Archive Created at {zip_path}")
             
             # **Clean Up Temporary Files**

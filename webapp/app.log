@@ -1,21 +1,138 @@
-2025-01-14 13:24:07,693 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-01-16 11:30:00,906 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-2025-01-14 13:24:07,694 INFO: [33mPress CTRL+C to quit[0m
-2025-01-14 13:24:07,695 INFO:  * Restarting with stat
-2025-01-14 13:24:08,073 WARNING:  * Debugger is active!
-2025-01-14 13:24:08,079 INFO:  * Debugger PIN: 740-403-945
-2025-01-14 13:24:09,964 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:09] "GET / HTTP/1.1" 200 -
-2025-01-14 13:24:10,077 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:10] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
-2025-01-14 13:24:13,259 DEBUG: Source Code Received for Obfuscation.
-2025-01-14 13:24:13,260 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='main', line=2, column=4), Token(type='LPAREN', value='(', line=2, column=8), Token(type='RPAREN', value=')', line=2, column=9), Token(type='LBRACE', value='{', line=2, column=11), Token(type='INT', value='int', line=3, column=4), Token(type='IDENT', value='a', line=3, column=8), Token(type='OP', value='=', line=3, column=10), Token(type='NUMBER', value=5, line=3, column=12), Token(type='SEMICOLON', value=';', line=3, column=13), Token(type='FLOAT', value='float', line=4, column=4), Token(type='IDENT', value='b', line=4, column=10), Token(type='OP', value='=', line=4, column=12), Token(type='IDENT', value='a', line=4, column=14), Token(type='OP', value='+', line=4, column=16), Token(type='NUMBER', value=3.2, line=4, column=18), Token(type='SEMICOLON', value=';', line=4, column=21), Token(type='RETURN', value='return', line=5, column=4), Token(type='NUMBER', value=0, line=5, column=11), Token(type='SEMICOLON', value=';', line=5, column=12), Token(type='RBRACE', value='}', line=6, column=0), Token(type='EOF', value='', line=6, column=0)]
-2025-01-14 13:24:13,262 DEBUG: Parsing Complete. AST Generated.
-2025-01-14 13:24:13,262 DEBUG: Obfuscation Complete.
-2025-01-14 13:24:13,262 DEBUG: Identifier Map: {'main': 'k50XSiFi', 'a': 'ov4bsWGt', 'b': 'hbaf4TT6'}
-2025-01-14 13:24:13,263 DEBUG: Code Generation Complete.
-2025-01-14 13:24:13,263 DEBUG: Parse Tree Generated.
-2025-01-14 13:24:13,263 DEBUG: Obfuscated Code Saved to C:\Users\buvan\AppData\Local\Temp\tmpmecbs8q0.c
-2025-01-14 13:24:13,264 DEBUG: Identifier Map Saved to C:\Users\buvan\AppData\Local\Temp\tmpml96_71y.json
-2025-01-14 13:24:13,283 DEBUG: ZIP Archive Created at C:\Users\buvan\AppData\Local\Temp\obfuscated_code.zip
-2025-01-14 13:24:13,285 DEBUG: Temporary Files Removed.
-2025-01-14 13:24:13,286 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:13] "POST /obfuscate HTTP/1.1" 200 -
-2025-01-14 13:24:13,330 INFO: 127.0.0.1 - - [14/Jan/2025 13:24:13] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-01-16 11:30:00,907 INFO: [33mPress CTRL+C to quit[0m
+2025-01-16 11:30:00,909 INFO:  * Restarting with stat
+2025-01-16 11:30:01,369 WARNING:  * Debugger is active!
+2025-01-16 11:30:01,375 INFO:  * Debugger PIN: 740-403-945
+2025-01-16 11:30:03,379 INFO: 127.0.0.1 - - [16/Jan/2025 11:30:03] "GET / HTTP/1.1" 200 -
+2025-01-16 11:30:03,481 INFO: 127.0.0.1 - - [16/Jan/2025 11:30:03] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-01-16 11:30:13,968 DEBUG: Source Code Received for Obfuscation.
+2025-01-16 11:30:13,970 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='main', line=2, column=4), Token(type='LPAREN', value='(', line=2, column=8), Token(type='RPAREN', value=')', line=2, column=9), Token(type='LBRACE', value='{', line=2, column=11), Token(type='INT', value='int', line=3, column=4), Token(type='IDENT', value='a', line=3, column=8), Token(type='OP', value='=', line=3, column=10), Token(type='NUMBER', value=5, line=3, column=12), Token(type='SEMICOLON', value=';', line=3, column=13), Token(type='FLOAT', value='float', line=4, column=4), Token(type='IDENT', value='b', line=4, column=10), Token(type='OP', value='=', line=4, column=12), Token(type='IDENT', value='a', line=4, column=14), Token(type='OP', value='+', line=4, column=16), Token(type='NUMBER', value=3.2, line=4, column=18), Token(type='SEMICOLON', value=';', line=4, column=21), Token(type='RETURN', value='return', line=5, column=4), Token(type='NUMBER', value=0, line=5, column=11), Token(type='SEMICOLON', value=';', line=5, column=12), Token(type='RBRACE', value='}', line=6, column=0), Token(type='EOF', value='', line=6, column=0)]
+2025-01-16 11:30:13,973 DEBUG: Parsing Complete. AST Generated.
+2025-01-16 11:30:13,973 DEBUG: Starting obfuscation process.
+2025-01-16 11:30:13,973 DEBUG: Identifier 'main' is eligible for obfuscation.
+2025-01-16 11:30:13,973 DEBUG: Assigned obfuscated name 'bFFT0xY3' to identifier 'main'.
+2025-01-16 11:30:13,975 DEBUG: Obfuscated function name 'main' to 'bFFT0xY3'.
+2025-01-16 11:30:13,975 DEBUG: Identifier 'a' is eligible for obfuscation.
+2025-01-16 11:30:13,975 DEBUG: Assigned obfuscated name 'yXrvSlKY' to identifier 'a'.
+2025-01-16 11:30:13,975 DEBUG: Obfuscated identifier 'a' to 'yXrvSlKY'.
+2025-01-16 11:30:13,976 DEBUG: Identifier 'b' is eligible for obfuscation.
+2025-01-16 11:30:13,976 DEBUG: Assigned obfuscated name 'h7XVOA4O' to identifier 'b'.
+2025-01-16 11:30:13,976 DEBUG: Obfuscated identifier 'b' to 'h7XVOA4O'.
+2025-01-16 11:30:13,977 DEBUG: Deobfuscating identifier 'a' to 'yXrvSlKY'.
+2025-01-16 11:30:13,977 DEBUG: Obfuscation complete. Identifier map: {'main': 'bFFT0xY3', 'a': 'yXrvSlKY', 'b': 'h7XVOA4O'}
+2025-01-16 11:30:13,977 DEBUG: Obfuscation Complete.
+2025-01-16 11:30:13,978 DEBUG: Identifier Map: {'main': 'bFFT0xY3', 'a': 'yXrvSlKY', 'b': 'h7XVOA4O'}
+2025-01-16 11:30:13,978 DEBUG: Code Generation Complete.
+2025-01-16 11:30:13,978 DEBUG: Parse Tree Generated.
+2025-01-16 11:30:13,979 DEBUG: Obfuscated code written to C:\Users\buvan\AppData\Local\Temp\tmps55b5mmh.c
+2025-01-16 11:30:13,981 DEBUG: Identifier map written to C:\Users\buvan\AppData\Local\Temp\tmp_o1kd4n_.json
+2025-01-16 11:30:14,009 DEBUG: ZIP Archive Created at C:\Users\buvan\AppData\Local\Temp\obfuscated_code.zip
+2025-01-16 11:30:14,011 DEBUG: Temporary Files Removed.
+2025-01-16 11:30:14,011 DEBUG: Serialized Parse Tree: {
+    "type": "Program",
+    "value": null,
+    "children": []
+}
+2025-01-16 11:30:14,013 INFO: 127.0.0.1 - - [16/Jan/2025 11:30:14] "POST /obfuscate HTTP/1.1" 200 -
+2025-01-16 11:30:14,076 INFO: 127.0.0.1 - - [16/Jan/2025 11:30:14] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-01-16 11:30:15,330 INFO: 127.0.0.1 - - [16/Jan/2025 11:30:15] "GET /download_zip/obfuscated_code.zip HTTP/1.1" 200 -
+2025-01-16 11:31:27,714 DEBUG: Obfuscated Code Received for Deobfuscation.
+2025-01-16 11:31:27,715 DEBUG: Identifier Map Received: {'main': 'bFFT0xY3', 'a': 'yXrvSlKY', 'b': 'h7XVOA4O'}
+2025-01-16 11:31:27,715 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=1, column=0), Token(type='IDENT', value='bFFT0xY3', line=1, column=4), Token(type='LPAREN', value='(', line=1, column=12), Token(type='RPAREN', value=')', line=1, column=13), Token(type='LBRACE', value='{', line=1, column=15), Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='yXrvSlKY', line=2, column=4), Token(type='OP', value='=', line=2, column=13), Token(type='NUMBER', value=5, line=2, column=15), Token(type='SEMICOLON', value=';', line=2, column=16), Token(type='FLOAT', value='float', line=3, column=0), Token(type='IDENT', value='h7XVOA4O', line=3, column=6), Token(type='OP', value='=', line=3, column=15), Token(type='IDENT', value='yXrvSlKY3', line=3, column=17), Token(type='NUMBER', value=2, line=3, column=27), Token(type='SEMICOLON', value=';', line=3, column=28), Token(type='RETURN', value='return', line=4, column=0), Token(type='NUMBER', value=0, line=4, column=7), Token(type='SEMICOLON', value=';', line=4, column=8), Token(type='RBRACE', value='}', line=5, column=0), Token(type='EOF', value='', line=7, column=0)]
+2025-01-16 11:31:27,717 ERROR: Deobfuscation failed.
+Traceback (most recent call last):
+  File "C:\Users\buvan\Documents\Programming\obfuscation\webapp\app.py", line 232, in deobfuscate
+    obf_ast = parser.parse()
+              ^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 71, in parse
+    return self.program()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 86, in program
+    stmt = self.statement()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 103, in statement
+    return self.function_declaration()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 197, in function_declaration
+    body.append(self.statement())
+                ^^^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 105, in statement
+    return self.declaration()
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 170, in declaration
+    self.consume('SEMICOLON')  # Consume ';'
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\buvan\Documents\Programming\obfuscation\src\code_parser.py", line 476, in consume
+    raise RuntimeError(f'Expected token type {expected_type}, got {token.type} ("{token.value}") at line {token.line}, column {token.column}')
+RuntimeError: Expected token type SEMICOLON, got NUMBER ("2") at line 3, column 27
+2025-01-16 11:31:27,724 INFO: 127.0.0.1 - - [16/Jan/2025 11:31:27] "[32mPOST /deobfuscate HTTP/1.1[0m" 302 -
+2025-01-16 11:31:27,735 INFO: 127.0.0.1 - - [16/Jan/2025 11:31:27] "GET / HTTP/1.1" 200 -
+2025-01-16 11:31:27,791 INFO: 127.0.0.1 - - [16/Jan/2025 11:31:27] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-01-16 11:32:17,321 DEBUG: Obfuscated Code Received for Deobfuscation.
+2025-01-16 11:32:17,321 DEBUG: Identifier Map Received: {'main': 'bFFT0xY3', 'a': 'yXrvSlKY', 'b': 'h7XVOA4O'}
+2025-01-16 11:32:17,322 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=1, column=0), Token(type='IDENT', value='bFFT0xY3', line=1, column=4), Token(type='LPAREN', value='(', line=1, column=12), Token(type='RPAREN', value=')', line=1, column=13), Token(type='LBRACE', value='{', line=1, column=15), Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='yXrvSlKY', line=2, column=4), Token(type='OP', value='=', line=2, column=13), Token(type='NUMBER', value=5, line=2, column=15), Token(type='SEMICOLON', value=';', line=2, column=16), Token(type='FLOAT', value='float', line=3, column=0), Token(type='IDENT', value='h7XVOA4O', line=3, column=6), Token(type='OP', value='=', line=3, column=15), Token(type='IDENT', value='yXrvSlKY3', line=3, column=17), Token(type='SEMICOLON', value=';', line=3, column=26), Token(type='RETURN', value='return', line=4, column=0), Token(type='NUMBER', value=0, line=4, column=7), Token(type='SEMICOLON', value=';', line=4, column=8), Token(type='RBRACE', value='}', line=5, column=0), Token(type='EOF', value='', line=7, column=0)]
+2025-01-16 11:32:17,324 DEBUG: Parsing Complete. AST Generated.
+2025-01-16 11:32:17,325 DEBUG: Reverse Identifier Map: {'bFFT0xY3': 'main', 'yXrvSlKY': 'a', 'h7XVOA4O': 'b'}
+2025-01-16 11:32:17,325 DEBUG: Deobfuscating 'bFFT0xY3' to 'main'
+2025-01-16 11:32:17,325 DEBUG: Deobfuscating 'yXrvSlKY' to 'a'
+2025-01-16 11:32:17,327 DEBUG: Deobfuscating 'h7XVOA4O' to 'b'
+2025-01-16 11:32:17,327 DEBUG: Deobfuscation Complete.
+2025-01-16 11:32:17,327 DEBUG: Original Code Generation Complete.
+2025-01-16 11:32:17,329 DEBUG: Deobfuscated code written to C:\Users\buvan\AppData\Local\Temp\tmp_cemeifw.c
+2025-01-16 11:32:17,342 DEBUG: ZIP Archive Created at C:\Users\buvan\AppData\Local\Temp\deobfuscated_code.zip
+2025-01-16 11:32:17,343 DEBUG: Temporary Files Removed.
+2025-01-16 11:32:17,380 INFO: 127.0.0.1 - - [16/Jan/2025 11:32:17] "[35m[1mPOST /deobfuscate HTTP/1.1[0m" 500 -
+2025-01-16 11:32:17,434 INFO: 127.0.0.1 - - [16/Jan/2025 11:32:17] "GET /deobfuscate?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-01-16 11:32:17,493 INFO: 127.0.0.1 - - [16/Jan/2025 11:32:17] "GET /deobfuscate?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-01-16 11:32:17,547 INFO: 127.0.0.1 - - [16/Jan/2025 11:32:17] "GET /deobfuscate?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-01-16 11:32:17,550 INFO: 127.0.0.1 - - [16/Jan/2025 11:32:17] "GET /deobfuscate?__debugger__=yes&cmd=resource&f=console.png&s=Uoe3Vl9q2ihkEQU4GJVU HTTP/1.1" 200 -
+2025-01-16 11:33:03,457 INFO:  * Detected change in 'C:\\Users\\buvan\\Documents\\Programming\\obfuscation\\webapp\\app.py', reloading
+2025-01-16 11:33:03,531 INFO:  * Restarting with stat
+2025-01-16 11:33:04,086 WARNING:  * Debugger is active!
+2025-01-16 11:33:04,095 INFO:  * Debugger PIN: 740-403-945
+2025-01-16 11:33:10,683 DEBUG: Obfuscated Code Received for Deobfuscation.
+2025-01-16 11:33:10,683 DEBUG: Identifier Map Received: {'main': 'bFFT0xY3', 'a': 'yXrvSlKY', 'b': 'h7XVOA4O'}
+2025-01-16 11:33:10,685 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=1, column=0), Token(type='IDENT', value='bFFT0xY3', line=1, column=4), Token(type='LPAREN', value='(', line=1, column=12), Token(type='RPAREN', value=')', line=1, column=13), Token(type='LBRACE', value='{', line=1, column=15), Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='yXrvSlKY', line=2, column=4), Token(type='OP', value='=', line=2, column=13), Token(type='NUMBER', value=5, line=2, column=15), Token(type='SEMICOLON', value=';', line=2, column=16), Token(type='FLOAT', value='float', line=3, column=0), Token(type='IDENT', value='h7XVOA4O', line=3, column=6), Token(type='OP', value='=', line=3, column=15), Token(type='IDENT', value='yXrvSlKY3', line=3, column=17), Token(type='SEMICOLON', value=';', line=3, column=26), Token(type='RETURN', value='return', line=4, column=0), Token(type='NUMBER', value=0, line=4, column=7), Token(type='SEMICOLON', value=';', line=4, column=8), Token(type='RBRACE', value='}', line=5, column=0), Token(type='EOF', value='', line=7, column=0)]
+2025-01-16 11:33:10,686 DEBUG: Parsing Complete. AST Generated.
+2025-01-16 11:33:10,687 DEBUG: Reverse Identifier Map: {'bFFT0xY3': 'main', 'yXrvSlKY': 'a', 'h7XVOA4O': 'b'}
+2025-01-16 11:33:10,687 DEBUG: Deobfuscating 'bFFT0xY3' to 'main'
+2025-01-16 11:33:10,688 DEBUG: Deobfuscating 'yXrvSlKY' to 'a'
+2025-01-16 11:33:10,688 DEBUG: Deobfuscating 'h7XVOA4O' to 'b'
+2025-01-16 11:33:10,688 DEBUG: Deobfuscation Complete.
+2025-01-16 11:33:10,689 DEBUG: Original Code Generation Complete.
+2025-01-16 11:33:10,691 DEBUG: Deobfuscated code written to C:\Users\buvan\AppData\Local\Temp\tmplba3rzsx.c
+2025-01-16 11:33:10,694 DEBUG: ZIP Archive Created at C:\Users\buvan\AppData\Local\Temp\deobfuscated_code.zip
+2025-01-16 11:33:10,694 DEBUG: Temporary Files Removed.
+2025-01-16 11:33:10,709 INFO: 127.0.0.1 - - [16/Jan/2025 11:33:10] "POST /deobfuscate HTTP/1.1" 200 -
+2025-01-16 11:33:10,808 INFO: 127.0.0.1 - - [16/Jan/2025 11:33:10] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-01-16 11:33:12,082 INFO: 127.0.0.1 - - [16/Jan/2025 11:33:12] "GET /download_zip/deobfuscated_code.zip HTTP/1.1" 200 -
+2025-01-16 11:33:41,204 DEBUG: Source Code Received for Obfuscation.
+2025-01-16 11:33:41,204 DEBUG: Tokenization Complete. Tokens: [Token(type='INT', value='int', line=1, column=0), Token(type='IDENT', value='bFFT0xY3', line=1, column=4), Token(type='LPAREN', value='(', line=1, column=12), Token(type='RPAREN', value=')', line=1, column=13), Token(type='LBRACE', value='{', line=1, column=15), Token(type='INT', value='int', line=2, column=0), Token(type='IDENT', value='yXrvSlKY', line=2, column=4), Token(type='OP', value='=', line=2, column=13), Token(type='NUMBER', value=5, line=2, column=15), Token(type='SEMICOLON', value=';', line=2, column=16), Token(type='FLOAT', value='float', line=3, column=0), Token(type='IDENT', value='h7XVOA4O', line=3, column=6), Token(type='OP', value='=', line=3, column=15), Token(type='IDENT', value='yXrvSlKY3', line=3, column=17), Token(type='SEMICOLON', value=';', line=3, column=26), Token(type='RETURN', value='return', line=4, column=0), Token(type='NUMBER', value=0, line=4, column=7), Token(type='SEMICOLON', value=';', line=4, column=8), Token(type='RBRACE', value='}', line=5, column=0), Token(type='EOF', value='', line=7, column=0)]
+2025-01-16 11:33:41,206 DEBUG: Parsing Complete. AST Generated.
+2025-01-16 11:33:41,207 DEBUG: Starting obfuscation process.
+2025-01-16 11:33:41,207 DEBUG: Identifier 'bFFT0xY3' is eligible for obfuscation.
+2025-01-16 11:33:41,207 DEBUG: Assigned obfuscated name 'wagAWnbU' to identifier 'bFFT0xY3'.
+2025-01-16 11:33:41,208 DEBUG: Obfuscated function name 'bFFT0xY3' to 'wagAWnbU'.
+2025-01-16 11:33:41,208 DEBUG: Identifier 'yXrvSlKY' is eligible for obfuscation.
+2025-01-16 11:33:41,208 DEBUG: Assigned obfuscated name 'lrIwV1JL' to identifier 'yXrvSlKY'.
+2025-01-16 11:33:41,208 DEBUG: Obfuscated identifier 'yXrvSlKY' to 'lrIwV1JL'.
+2025-01-16 11:33:41,209 DEBUG: Identifier 'h7XVOA4O' is eligible for obfuscation.
+2025-01-16 11:33:41,209 DEBUG: Assigned obfuscated name 'V8CZY76z' to identifier 'h7XVOA4O'.
+2025-01-16 11:33:41,209 DEBUG: Obfuscated identifier 'h7XVOA4O' to 'V8CZY76z'.
+2025-01-16 11:33:41,210 DEBUG: Obfuscation complete. Identifier map: {'bFFT0xY3': 'wagAWnbU', 'yXrvSlKY': 'lrIwV1JL', 'h7XVOA4O': 'V8CZY76z'}
+2025-01-16 11:33:41,210 DEBUG: Obfuscation Complete.
+2025-01-16 11:33:41,210 DEBUG: Identifier Map: {'bFFT0xY3': 'wagAWnbU', 'yXrvSlKY': 'lrIwV1JL', 'h7XVOA4O': 'V8CZY76z'}
+2025-01-16 11:33:41,211 DEBUG: Code Generation Complete.
+2025-01-16 11:33:41,211 DEBUG: Parse Tree Generated.
+2025-01-16 11:33:41,212 DEBUG: Obfuscated code written to C:\Users\buvan\AppData\Local\Temp\tmp4xj9n5sl.c
+2025-01-16 11:33:41,213 DEBUG: Identifier map written to C:\Users\buvan\AppData\Local\Temp\tmpwr65em97.json
+2025-01-16 11:33:41,239 DEBUG: ZIP Archive Created at C:\Users\buvan\AppData\Local\Temp\obfuscated_code.zip
+2025-01-16 11:33:41,240 DEBUG: Temporary Files Removed.
+2025-01-16 11:33:41,240 DEBUG: Serialized Parse Tree: {
+    "type": "Program",
+    "value": null,
+    "children": []
+}
+2025-01-16 11:33:41,242 INFO: 127.0.0.1 - - [16/Jan/2025 11:33:41] "POST /obfuscate HTTP/1.1" 200 -
+2025-01-16 11:33:41,282 INFO: 127.0.0.1 - - [16/Jan/2025 11:33:41] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -

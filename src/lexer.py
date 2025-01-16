@@ -15,6 +15,7 @@ class Lexer:
             ('PREPROCESSOR',   r'\#\s*(include|define)\s+["<][^">]+[">]'),  # Preprocessor directives
             ('NUMBER',         r'\d+(\.\d*)?'),               # Integer or decimal number
             ('IDENT',          r'[A-Za-z_]\w*'),              # Identifiers
+            ('DOT',            r'\.'),          # Member access operator
             ('OP',             r'[+\-*/%=<>!&|]+'),           # Operators
             ('LPAREN',         r'\('),                         # Left Parenthesis
             ('RPAREN',         r'\)'),                         # Right Parenthesis

@@ -58,14 +58,16 @@ class CodeGenerator:
         else:
             return f"{type_str} {var_name};\n"
 
-    def gen_Assignment(self, node):
-        # For assignments within declarations
-        return self.generate_node(node.children[0])
-
     def gen_AssignmentStatement(self, node):
         var_name = node.value
         expr = self.generate_node(node.children[0])
         return f"{var_name} = {expr};\n"
+
+    def gen_BIN_OP(self, node):
+        left = self.generate_node(node.children[0])
+        op = node.value
+        right = self.generate_node(node.children[1])
+        return f"{left} {op} {right}"
 
     def gen_Number(self, node):
         return f"{node.value}"
@@ -76,18 +78,12 @@ class CodeGenerator:
     def gen_Identifier(self, node):
         return f"{node.value}"
 
-    def gen_BinOp(self, node):
-        left = self.generate_node(node.children[0])
-        op = node.value
-        right = self.generate_node(node.children[1])
-        return f"{left} {op} {right}"
-
     def gen_UnaryOp(self, node):
         op = node.value
         operand = self.generate_node(node.children[0])
         return f"{op}{operand}"
 
-    def gen_Return(self, node):
+    def gen_ReturnStatement(self, node):
         if node.children:
             expr = self.generate_node(node.children[0])
             return f"return {expr};\n"
@@ -97,11 +93,29 @@ class CodeGenerator:
     def gen_IfStatement(self, node):
         condition = self.generate_node(node.children[0])
         then_branch = self.generate_node(node.children[1])
-        return f"if ({condition}) {{\n{then_branch}}}\n"
+        code = f"if ({condition}) {{\n{then_branch}}}\n"
+        if len(node.children) > 2:
+            else_branch = self.generate_node(node.children[2])
+            code += f"else {{\n{else_branch}}}\n"
+        return code
 
     def gen_WhileStatement(self, node):
         condition = self.generate_node(node.children[0])
         body = self.generate_node(node.children[1])
         return f"while ({condition}) {{\n{body}}}\n"
+
+    def gen_ForStatement(self, node):
+        init = self.generate_node(node.children[0])
+        condition = self.generate_node(node.children[1])
+        increment = self.generate_node(node.children[2])
+        body = self.generate_node(node.children[3])
+        return f"for ({init} {condition}; {increment}) {{\n{body}}}\n"
+
+    def gen_ExpressionStatement(self, node):
+        expr = self.generate_node(node.children[0])
+        return f"{expr};\n"
+
+    def gen_PreprocessorDirective(self, node):
+        return f"{node.value}\n"
 
     # Add more methods as needed for other AST node types

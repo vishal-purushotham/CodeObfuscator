@@ -1,5 +1,7 @@
 # src/deobfuscator.py
 
+import logging
+
 class Deobfuscator:
     def __init__(self, identifier_map):
         """
@@ -10,7 +12,7 @@ class Deobfuscator:
         """
         # Create a reverse mapping: obfuscated_name -> original_name
         self.reverse_map = {v: k for k, v in identifier_map.items()}
-        print("Reverse Identifier Map:", self.reverse_map)  # Debugging Statement
+        logging.debug(f"Reverse Identifier Map: {self.reverse_map}")  # Logging Statement
 
     def deobfuscate(self, ast):
         """
@@ -35,7 +37,7 @@ class Deobfuscator:
         # Check if the current node contains an identifier to deobfuscate
         if hasattr(node, 'value') and node.value in self.reverse_map:
             original_name = self.reverse_map[node.value]
-            print(f"Deobfuscating '{node.value}' to '{original_name}'")  # Debugging Statement
+            logging.debug(f"Deobfuscating '{node.value}' to '{original_name}'")  # Logging Statement
             node.value = original_name
 
         # If the node has children, traverse them recursively
