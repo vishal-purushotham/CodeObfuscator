@@ -41,6 +41,10 @@ pip install -r requirements.txt
 ## Usage 
 
 ### 1. Launch the Web Interface 
+```bash
+cd webapp
+```
+
 Run the following command to start the app:
 ```bash
 python app.py
