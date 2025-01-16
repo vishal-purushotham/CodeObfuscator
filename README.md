@@ -1,4 +1,4 @@
-# C Code Obfuscator & Deobfuscator ✨⚙️
+# C Code Obfuscator & Deobfuscator ⚙️
 
 The **C Code Obfuscator and Deobfuscator** is a Python-based tool designed to enhance the security and confidentiality of C source code. The obfuscator transforms the original code into a less readable and more complex version by renaming variables, functions, and other identifiers. The deobfuscator reverses this process, restoring the code to its original, readable state.
 
@@ -16,34 +16,34 @@ The **C Code Obfuscator and Deobfuscator** is a Python-based tool designed to en
 
 ---
 
-## Installation 🌐
+## Installation 
 
 ### 1. Clone the Repository 
 ```bash
-🔎 git clone https://github.com/vishal-purushotham/CodeObfuscator.git
+git clone https://github.com/vishal-purushotham/CodeObfuscator.git
 cd CodeObfuscator
 ```
 
 ### 2. Set Up a Virtual Environment (Optional but Recommended) 
 ```bash
-🌱 python -m venv venv
+python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 ### 3. Install Dependencies 
 ```bash
-🔧 pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 > **Note**: Ensure that requirements.txt includes all necessary Python packages.
 
 ---
 
-## Usage 🚀
+## Usage 
 
 ### 1. Launch the Web Interface 
 Run the following command to start the app:
 ```bash
-🕹 python app.py
+python app.py
 ```
 
 ### 2. Upload Your C Source File 
@@ -63,11 +63,11 @@ Access the web page at `http://127.0.0.1:5000` and upload your C source file for
 ## Interactive Web Features 🌟
 
 - **Sleek & Fun UI**: 
-  - Buttons with animations 🔹.
-  - Real-time progress updates 🕐.
+  - Buttons with animations 🔹
+  - Real-time progress updates 🕐
 - **Friendly Notifications**:
   - Success ✅ and error ❌ alerts.
-- **Download Links**: Easily download your zipped files with a single click 🗭.
+- **Download Links**: Easily download your zipped files with a single click.
 
 ---
 
@@ -77,18 +77,6 @@ Access the web page at `http://127.0.0.1:5000` and upload your C source file for
 2. Run the app and upload your file.
 3. Download the **zipped results**.
 4. Use the `mapper.json` file to deobfuscate, if needed.
-
----
-
-## Contributing 🌱
-
-We welcome contributions! Feel free to submit a pull request or report issues.
-
----
-
-## License 🔒
-
-This project is licensed under the MIT License.
 
 ---
 
