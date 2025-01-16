@@ -63,22 +63,18 @@ Access the web page at `http://127.0.0.1:5000` and upload your C source file for
 ## Interactive Web Features 🌟
 
 - **Sleek & Fun UI**: 
-  - Buttons with animations 🔹
-  - Real-time progress updates 🕐
+  - Buttons with animations 
+  - Real-time progress updates 
 - **Friendly Notifications**:
   - Success ✅ and error ❌ alerts.
 - **Download Links**: Easily download your zipped files with a single click.
 
 ---
 
-## Example Workflow 🎩
+## Example Workflow 
 
 1. Prepare Your C Source File (e.g., `sample_code.c`).
 2. Run the app and upload your file.
 3. Download the **zipped results**.
 4. Use the `mapper.json` file to deobfuscate, if needed.
-
----
-
-**Happy Coding! 🌟**
 
